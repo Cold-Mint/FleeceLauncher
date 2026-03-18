@@ -19,7 +19,6 @@ public class LauncherListener implements Listener {
 
     private final HashSet<UUID> tntUuid = new HashSet<>();
 
-
     @EventHandler
     void onPlayerLaunchProjectileEvent(EntityShootBowEvent event) {
         LivingEntity livingEntity = event.getEntity();
@@ -32,6 +31,7 @@ public class LauncherListener implements Listener {
         Entity projectile = event.getProjectile();
         boolean success = false;
         if (projectile instanceof Arrow || projectile instanceof SpectralArrow) {
+            player.sendMessage(material.name());
             if (material.isBlock()) {
                 BlockType blockType = material.asBlockType();
                 if (blockType == null) {
@@ -90,6 +90,24 @@ public class LauncherListener implements Listener {
                 splashPotion.setShooter(player);
                 splashPotion.setItem(itemStack);
                 splashPotion.setVelocity(projectile.getVelocity());
+                success = true;
+                event.setCancelled(true);
+            }
+            if (material == Material.SHULKER_SHELL) {
+                Entity entity = player.getTargetEntity(120);
+                ShulkerBullet shulkerBullet = player.getWorld().spawn(projectile.getLocation(), ShulkerBullet.class);
+                shulkerBullet.setShooter(player);
+                if (entity != null) {
+                    shulkerBullet.setTarget(entity);
+                }
+                shulkerBullet.setVelocity(projectile.getVelocity());
+                success = true;
+                event.setCancelled(true);
+            }
+            if (material == Material.DRAGON_BREATH) {
+                DragonFireball dragonFireball = player.getWorld().spawn(projectile.getLocation(), DragonFireball.class);
+                dragonFireball.setShooter(player);
+                dragonFireball.setVelocity(projectile.getVelocity());
                 success = true;
                 event.setCancelled(true);
             }
