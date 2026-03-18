@@ -1,0 +1,4 @@
+name: FleeceLauncher
+version: '1.0-SNAPSHOT'
+main: com.coldmint.fleeceLauncher.FleeceLauncher
+api-version: '1.21'
